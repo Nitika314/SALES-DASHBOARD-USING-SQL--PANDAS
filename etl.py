@@ -21,9 +21,9 @@ engine = create_engine(url)
 
 
 
-# -----------------------------
+
 # Extract Data
-# -----------------------------
+
 customers = pd.read_sql("SELECT * FROM customers", engine)
 products = pd.read_sql("SELECT * FROM products", engine)
 orders = pd.read_sql("SELECT * FROM orders", engine)
@@ -31,9 +31,9 @@ details = pd.read_sql("SELECT * FROM order_details", engine)
 
 print("Data Extracted")
 
-# -----------------------------
+
 # Cleaning: Customers
-# -----------------------------
+
 
 # Remove duplicates
 customers = customers.drop_duplicates(subset=["email"], keep="first")
@@ -42,9 +42,9 @@ customers = customers.drop_duplicates(subset=["email"], keep="first")
 customers["city"] = customers["city"].fillna("Unknown")
 customers["email"] = customers["email"].fillna("no_email@unknown.com")
 
-# -----------------------------
+
 # Cleaning: Products
-# -----------------------------
+
 
 # Fill missing price with mean
 products["price"] = products["price"].fillna(products["price"].mean())
@@ -52,9 +52,9 @@ products["price"] = products["price"].fillna(products["price"].mean())
 # Remove invalid prices
 products = products[products["price"] > 0]
 
-# -----------------------------
+
 # Cleaning: Orders
-# -----------------------------
+
 
 # Convert date
 orders["order_date"] = pd.to_datetime(orders["order_date"])
@@ -66,9 +66,9 @@ orders = orders[orders["order_status"].isin(valid_status)]
 # Remove negative/zero orders
 orders = orders[orders["total_amount"] > 0]
 
-# -----------------------------
+
 # Cleaning: Order Details
-# -----------------------------
+
 
 # Remove invalid subtotal
 details = details[details["subtotal"] > 0]
@@ -87,9 +87,9 @@ details["clean_subtotal"] = details["quantity"] * details["price"]
 details = details.drop(columns=["id_y"])
 details = details.rename(columns={"id_x": "id"})
 
-# -----------------------------
+
 # Feature Engineering
-# -----------------------------
+
 
 # Add month column
 orders["month"] = orders["order_date"].dt.to_period("M").astype(str)
@@ -98,9 +98,8 @@ orders["month"] = orders["order_date"].dt.to_period("M").astype(str)
 clv = orders.groupby("customer_id")["total_amount"].sum().reset_index()
 clv.columns = ["customer_id", "lifetime_value"]
 
-# -----------------------------
 # Load Clean Data Back
-# -----------------------------
+
 
 customers.to_sql("customers_clean", engine, if_exists="replace", index=False)
 products.to_sql("products_clean", engine, if_exists="replace", index=False)
