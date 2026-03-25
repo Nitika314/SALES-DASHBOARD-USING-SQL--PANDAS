@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-# ---------------- CONFIG ---------------- #
+#  CONFIG 
 
 DB_CONFIG = {
     "host": "localhost",
@@ -15,8 +15,7 @@ DB_CONFIG = {
 }
 
 
-# ---------------- DB CONNECTION ---------------- #
-
+# DB CONNECTION
 @st.cache_resource
 def get_connection():
     return mysql.connector.connect(**DB_CONFIG)
@@ -28,7 +27,7 @@ def fetch_data(query):
     return df
 
 
-# ---------------- PAGE SETUP ---------------- #
+# PAGE SETUP 
 
 st.set_page_config(
     page_title="Sales Analytics Dashboard",
@@ -42,7 +41,7 @@ st.markdown("ETL + MySQL + Streamlit Project")
 st.divider()
 
 
-# ---------------- KPI SECTION ---------------- #
+#  KPI SECTION
 
 st.subheader("📌 Key Metrics")
 
@@ -73,7 +72,7 @@ col3.metric("Total Customers", total_customers)
 st.divider()
 
 
-# ---------------- ORDERS ANALYSIS ---------------- #
+# ORDERS ANALYSIS 
 
 st.subheader("📦 Orders Analysis")
 
@@ -124,7 +123,7 @@ else:
 st.divider()
 
 
-# ---------------- CUSTOMER ANALYSIS ---------------- #
+# CUSTOMER ANALYSIS 
 
 st.subheader("👥 Customer Analysis")
 
@@ -172,7 +171,7 @@ else:
 st.divider()
 
 
-# ---------------- PRODUCT ANALYSIS ---------------- #
+# PRODUCT ANALYSIS 
 
 st.subheader("📦 Product Analysis")
 
@@ -220,7 +219,7 @@ else:
 st.divider()
 
 
-# ---------------- RAW DATA ---------------- #
+# RAW DATA 
 
 st.subheader("📄 Raw Tables")
 
